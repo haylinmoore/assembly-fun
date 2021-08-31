@@ -39,7 +39,7 @@ printchar:
     mov byte [ds:eax], bl
     mov byte [ds:eax+1], cl
     popad
-    ret 16
+    ret 20
 
 print:
     pushad
@@ -71,7 +71,7 @@ print_newline:
 
 print_exit:
     popad
-    ret 4
+    ret
 
 welcome db "----- Welcome to HamOS -----", 10, "I hope you enjoy your stay", 10, ">", 0
 hang:
