@@ -27,21 +27,23 @@ clear_pipe:
     jmp hang
 
 printchar:
-    mov eax, [esp+12]
+    pushad
+    mov eax, [esp+ 12 + 32]
     imul eax, 80
-    mov edx, [esp + 16]
+    mov edx, [esp + 16 + 32]
     add eax, edx
     imul eax, 2
     add eax, 0x0B8000
-    mov  ebx, [esp + 8]
-    mov  ecx, [esp + 4]
+    mov  ebx, [esp + 8 + 32]
+    mov  ecx, [esp + 4 + 32]
     mov byte [ds:eax], bl
     mov byte [ds:eax+1], cl
+    popad
     ret 16
 
 print:
     pushad
-    mov  si, [esp + 36]
+    mov  si, [esp + 32 + 4]
     mov ebx, 0
     mov ecx, 0
     jmp print_loop
@@ -52,15 +54,11 @@ print_loop:
     je print_exit
     cmp al, 10
     je print_newline
-    push ebx   ; save x 
-    push ecx   ; save y 
     push ebx   ; set x pos
     push ecx    ; set y pos
     push eax   ; set character
     push 0x1B ; set color
     call printchar
-    pop ecx
-    pop ebx
     inc ebx
     cmp ebx, 80
     je print_newline
