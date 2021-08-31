@@ -40,7 +40,8 @@ printchar:
     ret 16
 
 print:
-    mov  si, [esp + 4]
+    pushad
+    mov  si, [esp + 36]
     mov ebx, 0
     mov ecx, 0
     jmp print_loop
@@ -49,7 +50,7 @@ print_loop:
     lodsb
     cmp al, 0
     je print_exit
-    cmp al, 13
+    cmp al, 10
     je print_newline
     push ebx   ; save x 
     push ecx   ; save y 
@@ -71,9 +72,10 @@ print_newline:
     jmp print_loop
 
 print_exit:
-    ret 8
+    popad
+    ret 4
 
-welcome db "----- Welcome to HamOS -----", 13, "New line bitches", 0
+welcome db "----- Welcome to HamOS -----", 10, "I hope you enjoy your stay", 10, ">", 0
 hang:
     jmp hang                ; Loop, self-jump
 
